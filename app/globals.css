@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --blood: #ff3b2f;
+  --void: #060507;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--void);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--blood);
+  color: #060507;
+}
+
+/* thin dark scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #060507;
+}
+::-webkit-scrollbar-thumb {
+  background: #1d1b20;
+  border: 2px solid #060507;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3037;
+}
+
+/* ---- HUD primitives ---- */
+
+.hud-tag {
+  @apply font-mono text-[10px] uppercase tracking-tag text-steel md:text-[11px];
+}
+
+.hud-chip {
+  @apply border border-white/10 bg-panel/80 px-3 py-2 font-mono text-[10px] uppercase tracking-hud md:text-[11px];
+}
+
+/* corner brackets on panels */
+.brackets {
+  position: relative;
+}
+.brackets::before,
+.brackets::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+.brackets::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--blood);
+  border-left: 1px solid var(--blood);
+}
+.brackets::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid var(--blood);
+  border-right: 1px solid var(--blood);
+}
+
+/* scanline sweep used on module image reveals */
+@keyframes scan {
+  0% {
+    transform: translateY(-110%);
+  }
+  100% {
+    transform: translateY(110%);
+  }
+}
+
+/* subtle flicker for live indicators */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--blood);
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+/* fight-team ledger marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 45s linear infinite;
+}
+.marquee:hover {
+  animation-play-state: paused;
+}
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+}
